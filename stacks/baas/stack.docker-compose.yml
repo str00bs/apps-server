@@ -3,7 +3,7 @@ version: '3.7'
 services:
   # Main
   appwrite:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     container_name: stack-appwrite
     restart: unless-stopped
     volumes:
@@ -67,7 +67,7 @@ services:
 
   # Workers
   appwrite-usage:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-usage
     container_name: stack-appwrite-usage
     restart: unless-stopped
@@ -88,7 +88,7 @@ services:
       - traefik.enable=false
 
   appwrite-audits:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-audits
     container_name: stack-appwrite-audits
     restart: unless-stopped
@@ -112,7 +112,7 @@ services:
       - traefik.enable=false
 
   appwrite-webhooks:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-webhooks
     container_name: stack-appwrite-webhooks
     restart: unless-stopped
@@ -137,7 +137,7 @@ services:
       - traefik.enable=false
 
   appwrite-tasks:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-tasks
     container_name: stack-appwrite-tasks
     restart: unless-stopped
@@ -162,7 +162,7 @@ services:
       - traefik.enable=false
 
   appwrite-deletes:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-deletes
     container_name: stack-appwrite-deletes
     restart: unless-stopped
@@ -190,7 +190,7 @@ services:
       - traefik.enable=false
 
   appwrite-certs:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-certificates
     container_name: stack-appwrite-certs
     restart: unless-stopped
@@ -219,7 +219,7 @@ services:
       - traefik.enable=false
 
   appwrite-functions:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-functions
     container_name: stack-appwrite-functions
     restart: unless-stopped
@@ -253,7 +253,7 @@ services:
       - traefik.enable=false
 
   appwrite-mails:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: worker-mails
     container_name: stack-appwrite-mails
     restart: unless-stopped
@@ -279,7 +279,7 @@ services:
 
   # Internal
   appwrite-maintenance:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: maintenance
     container_name: stack-appwrite-maintenance
     restart: unless-stopped
@@ -301,7 +301,7 @@ services:
       - traefik.enable=false
 
   appwrite-schedule:
-    image: appwrite/appwrite:0.8.0
+    image: appwrite/appwrite:latest
     entrypoint: schedule
     container_name: stack-appwrite-schedule
     restart: unless-stopped
