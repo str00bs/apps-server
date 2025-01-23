@@ -42,4 +42,29 @@ It's highly recommended to deploy [Admin](stacks/admin) next and use this for pr
 ## Deployments
 There are two ways to deploy the configured stacks;
 1. Using Portainers WebGUI & stacks feature
-2. Manually by following the same steps as in `#Setup`
+2. Manually by following the same steps as in setup per stack (per compose file)
+
+## Adding apps
+To add a new app container, the following needs to be included:
+- `stack.docker-compose.yml` with the following properties:
+  - Per service, define traefik labels for exposure
+    ```yaml
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.{SERVICE_NAME}.tls=true
+      - traefik.http.routers.{SERVICE_NAME}.tls.certresolver=letsencrypt
+      - traefik.http.routers.{SERVICE_NAME}.entrypoints=https
+      - traefik.http.routers.{SERVICE_NAME}.rule=Host(`${DOMAIN}`)
+      # Services
+      - traefik.http.services.{SERVICE_NAME}.loadbalancer.server.port=80
+    ```
+- `stack.env` with the follwing properties:
+  - This is required for domain and storage configuration 
+    ```ini
+    # Project variables
+    COMPOSE_PROJECT_NAME=stack-{STACK_NAME}
+    GLOBAL_STORAGE={PATH_TO_STORAGE}
+    DOMAIN={YOUR_DOMAIN_NAME}
+    # Service variables
+    MY_VAR="1234"
+    ```
