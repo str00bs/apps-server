@@ -19,7 +19,7 @@ services:
       - traefik.enable=false
 
   writeups:
-    image: ghost:4.4-alpine
+    image: ghost:latest
     container_name: stack-writeups
     restart: unless-stopped
     volumes:
