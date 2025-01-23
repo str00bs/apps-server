@@ -33,7 +33,7 @@ This repository contains a variety of open-source fueled apps, services and tool
 ## Setup
 The [Gateway](stacks/gateway/) Needs to be deployed first to allow LetsEncrypt to provide SSL.
 1. Fill in, and copy over the environment files `cp stack.env .env` 
-2. Fill in, and copy over the docker files `stack.docker-compose.yfilesml docker-compose.yml`
+2. Fill in, and copy over the docker files `stack.docker-compose.yml docker-compose.yml`
 3. Start the gateway: `docker-compose up -d`
 
 It's highly recommended to deploy [Admin](stacks/admin) next and use this for preceeding stack deployments.
