@@ -1,8 +1,7 @@
-# Apps Templates
-Open-source fueled apps, services and tools for a self hosting & development.
+# Apps Server
+This repository contains a variety of open-source fueled apps, services and tools for a self hosting & development.
 
-
-## Available templates
+## Available Service Stacks
 - `admin` | `portainer`: Container native monitoring and administration interface
 - `analytics` | `matomo`: Open-source GDPR compliant analytics platform
 - `automations` | `n8n`: Open-source integration & flow based automation tool
