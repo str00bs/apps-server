@@ -4,7 +4,7 @@ services:
   # Main
   appwrite:
     image: appwrite/appwrite:latest
-    container_name: stack-appwrite
+    container_name: service-appwrite
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/appwrite/config:/storage/config:rw
@@ -69,7 +69,7 @@ services:
   appwrite-usage:
     image: appwrite/appwrite:latest
     entrypoint: worker-usage
-    container_name: stack-appwrite-usage
+    container_name: service-appwrite-usage
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -90,7 +90,7 @@ services:
   appwrite-audits:
     image: appwrite/appwrite:latest
     entrypoint: worker-audits
-    container_name: stack-appwrite-audits
+    container_name: service-appwrite-audits
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -114,7 +114,7 @@ services:
   appwrite-webhooks:
     image: appwrite/appwrite:latest
     entrypoint: worker-webhooks
-    container_name: stack-appwrite-webhooks
+    container_name: service-appwrite-webhooks
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -139,7 +139,7 @@ services:
   appwrite-tasks:
     image: appwrite/appwrite:latest
     entrypoint: worker-tasks
-    container_name: stack-appwrite-tasks
+    container_name: service-appwrite-tasks
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -164,7 +164,7 @@ services:
   appwrite-deletes:
     image: appwrite/appwrite:latest
     entrypoint: worker-deletes
-    container_name: stack-appwrite-deletes
+    container_name: service-appwrite-deletes
     restart: unless-stopped
     volumes: 
       - ${GLOBAL_STORAGE}/appwrite/uploads:/storage/uploads:rw
@@ -192,7 +192,7 @@ services:
   appwrite-certs:
     image: appwrite/appwrite:latest
     entrypoint: worker-certificates
-    container_name: stack-appwrite-certs
+    container_name: service-appwrite-certs
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/appwrite/config:/storage/config:rw
@@ -221,7 +221,7 @@ services:
   appwrite-functions:
     image: appwrite/appwrite:latest
     entrypoint: worker-functions
-    container_name: stack-appwrite-functions
+    container_name: service-appwrite-functions
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/appwrite/functions:/storage/functions:rw
@@ -255,7 +255,7 @@ services:
   appwrite-mails:
     image: appwrite/appwrite:latest
     entrypoint: worker-mails
-    container_name: stack-appwrite-mails
+    container_name: service-appwrite-mails
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -281,7 +281,7 @@ services:
   appwrite-maintenance:
     image: appwrite/appwrite:latest
     entrypoint: maintenance
-    container_name: stack-appwrite-maintenance
+    container_name: service-appwrite-maintenance
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -303,7 +303,7 @@ services:
   appwrite-schedule:
     image: appwrite/appwrite:latest
     entrypoint: schedule
-    container_name: stack-appwrite-schedule
+    container_name: service-appwrite-schedule
     restart: unless-stopped
     networks:
       - appwrite-net
@@ -321,7 +321,7 @@ services:
   # Databases
   appwrite-db:
     image: appwrite/mariadb:1.2.0
-    container_name: stack-appwrite-db
+    container_name: service-appwrite-db
     restart: unless-stopped
     command: 'mysqld --innodb-flush-method=fsync'
     volumes:
@@ -338,7 +338,7 @@ services:
 
   appwrite-cache:
     image: redis:6.0-alpine3.12
-    container_name: stack-appwrite-cache
+    container_name: service-appwrite-cache
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/appwrite/cache:/data:rw
@@ -349,7 +349,7 @@ services:
 
   appwrite-logs:
     image: influxdb:1.8-alpine
-    container_name: stack-appwrite-logs
+    container_name: service-appwrite-logs
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/appwrite/logs:/var/lib/influxdb:rw
@@ -360,7 +360,7 @@ services:
 
   appwrite-metrics:
     image: appwrite/telegraf:1.0.0
-    container_name: stack-appwrite-metrics
+    container_name: service-appwrite-metrics
     restart: unless-stopped
     networks:
       - appwrite-net

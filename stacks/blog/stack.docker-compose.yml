@@ -4,7 +4,7 @@ version: "3.7"
 services:
   writeups-db:
     image: mariadb:latest
-    container_name: stack-writeups-db
+    container_name: service-writeups-db
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/writeups/mysql:/var/lib/mysql
@@ -20,7 +20,7 @@ services:
 
   writeups:
     image: ghost:latest
-    container_name: stack-writeups
+    container_name: service-writeups
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/writeups/main:/var/lib/ghost/content

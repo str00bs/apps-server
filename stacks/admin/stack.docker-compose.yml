@@ -4,7 +4,7 @@ version: "3.7"
 services:
   admin:
     image: portainer/portainer-ce:latest
-    container_name: core-admin
+    container_name: service-admin
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

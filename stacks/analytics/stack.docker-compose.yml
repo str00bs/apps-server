@@ -3,7 +3,7 @@ version: "3.7"
 
 services:
   analytics-db:
-    container_name: stack-analytics-db
+    container_name: service-analytics-db
     image: mariadb:latest
     restart: unless-stopped
     command: --max-allowed-packet=64MB
@@ -21,7 +21,7 @@ services:
 
   analytics:
     image: matomo:latest
-    container_name: stack-analytics
+    container_name: service-analytics
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/analytics/main:/var/www/html

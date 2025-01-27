@@ -4,7 +4,7 @@ version: "3.7"
 services:
   gateway:
     image: traefik:latest
-    container_name: core-gateway
+    container_name: service-gateway
     restart: unless-stopped
     command: --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
     environment: 

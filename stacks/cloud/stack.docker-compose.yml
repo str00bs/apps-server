@@ -3,7 +3,7 @@ version: "3.7"
 
 services:
   cloud-db:
-    container_name: stack-cloud-db
+    container_name: service-cloud-db
     image: mariadb:latest
     restart: unless-stopped
     command: --innodb-read-only-compressed=OFF
@@ -21,7 +21,7 @@ services:
 
   cloud-cache:
     image: redis:6-alpine
-    container_name: stack-cloud-cache
+    container_name: service-cloud-cache
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/cloud/redis:/data
@@ -32,7 +32,7 @@ services:
 
   cloud:
     image: nextcloud:latest
-    container_name: stack-cloud
+    container_name: service-cloud
     restart: unless-stopped
     volumes:
       - ${GLOBAL_STORAGE}/cloud/html:/var/www/html

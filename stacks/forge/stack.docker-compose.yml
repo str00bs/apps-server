@@ -1,7 +1,7 @@
 services:
   db:
     image: mysql:8
-    container_name: stack-forge-db
+    container_name: service-forge-db
     restart: unless-stopped
     environment:
       - MYSQL_DATABASE=${DB_NAME}
@@ -17,7 +17,7 @@ services:
 
   server:
     image: codeberg.org/forgejo/forgejo:10
-    container_name: stack-forge
+    container_name: service-forge
     restart: unless-stopped
     depends_on:
       - db
