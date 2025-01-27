@@ -1,0 +1,56 @@
+services:
+  db:
+    image: mysql:8
+    container_name: stack-forge-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+    volumes:
+      - ${GLOBAL_STORAGE}/forge/mysql:/var/lib/mysql
+    networks:
+      - forge-net
+    labels:
+      - traefik.enable=false
+
+  server:
+    image: codeberg.org/forgejo/forgejo:10
+    container_name: stack-forge
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - FORGEJO__database__DB_TYPE=mysql
+      - FORGEJO__database__HOST=db:3306
+      - FORGEJO__database__NAME=${DB_NAME}
+      - FORGEJO__database__USER=${DB_USER}
+      - FORGEJO__database__PASSWD=${DB_PASS}
+
+    volumes:
+      - ${GLOBAL_STORAGE}/forge/data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - forge-net
+      - proxy
+    labels:
+      # Routers
+      - traefik.enable=true
+      - traefik.http.routers.forge.tls=true
+      - traefik.http.routers.forge.tls.certresolver=letsencrypt
+      - traefik.http.routers.forge.entrypoints=https
+      - traefik.http.routers.forge.rule=Host(`${DOMAIN}`)
+      # Services
+      - traefik.http.services.forge.loadbalancer.server.port=3000
+      - traefik.tcp.services.forge.loadbalancer.server.port=22
+
+networks:
+  forge-net:
+    name: forge-net
+    external: false
+  proxy:
+    external: true
