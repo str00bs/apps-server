@@ -4,7 +4,7 @@ version: "3.7"
 services:
   ci:
     image: drone/drone:latest
-    container_name: stack-ci
+    container_name: service-ci
     restart: unless-stopped
     environment:
       - DRONE_GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
@@ -28,7 +28,7 @@ services:
 
   ci-runner:
     image: drone/drone-runner-docker:latest
-    container_name: stack-ci-runner
+    container_name: service-ci-runner
     restart: unless-stopped
     environment:
       - DRONE_RPC_PROTO=https

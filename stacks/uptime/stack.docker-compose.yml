@@ -3,8 +3,8 @@ version: "3.7"
 
 services:
   uptime:
-    container_name: service-uptime
     image: louislam/uptime-kuma:latest
+    container_name: service-uptime
     restart: unless-stopped
     networks:
       - proxy

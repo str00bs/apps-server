@@ -10,7 +10,6 @@ services:
       - ${GLOBAL_STORAGE}/registry/data:/data
     networks:
       - proxy
-      - registry-net
     environment:
       - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/data
       - REGISTRY_HTTP_SECRET=${SECRET}
@@ -27,6 +26,3 @@ services:
 networks:
   proxy:
     external: true
-  registry-net:
-    name: registry-net
-    external: false
