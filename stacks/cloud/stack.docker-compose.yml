@@ -80,6 +80,26 @@ services:
       # Services
       - traefik.http.services.cloud.loadbalancer.server.port=80
 
+  cloud-cron:
+    image: nextcloud:latest
+    container_name: service-cloud-cron
+    restart: unless-stopped
+    entrypoint: /cron.sh
+    volumes:
+      - ${GLOBAL_STORAGE}/cloud/html:/var/www/html
+    networks:
+      - cloud-net
+    environment:
+      - MYSQL_HOST=cloud-db
+      - MYSQL_DATABASE=${DB_DB}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - REDIS_HOST=cloud-cache
+    depends_on:
+      - cloud
+    labels:
+      - traefik.enable=false
+
 networks:
   cloud-net:
     name: cloud-net
