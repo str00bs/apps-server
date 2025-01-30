@@ -2,14 +2,14 @@
 version: "3.7"
 
 services:
-  writeups-db:
+  blog-db:
     image: mariadb:latest
-    container_name: service-writeups-db
+    container_name: service-blog-db
     restart: unless-stopped
     volumes:
-      - ${GLOBAL_STORAGE}/writeups/mysql:/var/lib/mysql
+      - ${GLOBAL_STORAGE}/blog/mysql:/var/lib/mysql
     networks:
-      - writeups-net
+      - blog-net
     environment:
       - MYSQL_DATABASE=${DB_DB}
       - MYSQL_USER=${DB_USER}
@@ -18,39 +18,39 @@ services:
     labels:
       - traefik.enable=false
 
-  writeups:
+  blog:
     image: ghost:latest
-    container_name: service-writeups
+    container_name: service-blog
     restart: unless-stopped
     volumes:
-      - ${GLOBAL_STORAGE}/writeups/main:/var/lib/ghost/content
+      - ${GLOBAL_STORAGE}/blog/main:/var/lib/ghost/content
     networks:
       - proxy
-      - writeups-net
+      - blog-net
     links:
-      - writeups-db
+      - blog-db
     depends_on:
-      - writeups-db
+      - blog-db
     environment:
       - url=https://${DOMAIN}
       - database__client=mysql
-      - database__connection__host=writeups-db
+      - database__connection__host=blog-db
       - database__connection__database=${DB_DB}
       - database__connection__user=${DB_USER}
       - database__connection__password=${DB_PASS}
     labels:
       - traefik.enable=true
       # Routers
-      - traefik.http.routers.writeups.tls=true
-      - traefik.http.routers.writeups.tls.certresolver=letsencrypt
-      - traefik.http.routers.writeups.entrypoints=https
-      - traefik.http.routers.writeups.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.blog.tls=true
+      - traefik.http.routers.blog.tls.certresolver=letsencrypt
+      - traefik.http.routers.blog.entrypoints=https
+      - traefik.http.routers.blog.rule=Host(`${DOMAIN}`)
       # Services
-      # Removes traefiks ability to see container IP for some reason. Security config somewhere?
-      # - traefik.http.services.writeups.loadbalancer.server.port=80
+      - traefik.http.services.blog.loadbalancer.server.port=2368
+
 networks:
-  writeups-net:
-    name: writeups-net
+  blog-net:
+    name: blog-net
     external: false
   proxy:
     external: true
