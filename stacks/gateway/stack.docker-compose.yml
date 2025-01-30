@@ -6,25 +6,46 @@ services:
     image: traefik:latest
     container_name: service-gateway
     restart: unless-stopped
-    command: --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
     environment: 
-      - TRAEFIK_LOG_FILEPATH=${GLOBAL_STORAGE}/traefik/traefik.log
-      - TRAEFIK_ACCESSLOG_FILEPATH=${GLOBAL_STORAGE}/traefik/access.log
+      # Global
+      - TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false
+      # Dashboard
+      - TRAEFIK_API=true
+      - TRAEFIK_API_DASHBOARD=true
+      - TRAEFIK_API_DISABLEDASHBOARDAD=true
+      # Entrypoints
+      - TRAEFIK_ENTRYPOINTS_HTTP=true
+      - TRAEFIK_ENTRYPOINTS_HTTP_ADDRESS=:80
+      - TRAEFIK_ENTRUPOINTS_HTTPS=true
+      - TRAEFIK_ENTRYPOINTS_HTTPS_ADDRESS=:443
+      - TRAEFIK_ENTRYPOINTS_HTTP_HTTP_REDIRECTIONS_ENTRYPOINT_TO=https
+      - TRAEFIK_ENTRYPOINTS_HTTP_HTTP_REDIRECTIONS_ENTRYPOINT_SCHEME=https
+      # Providers
+      - TRAEFIK_PROVIDERS_DOCKER=true
+      - TRAEFIK_PROVIDERS_DOCKER_NETWORK=proxy
+      # TLS
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL=${ACME_EMAIL}
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_HTTPCHALLENGE=true
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_HTTPCHALLENGE_ENTRYPOINT=http
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_STORAGE=/etc/traefik/acme.json
+      # Logs
+      - TRAEFIK_LOG=true
+      - TRAEFIK_LOG_FILEPATH=/etc/traefik/logs/traefik.log
+      - TRAEFIK_ACCESSLOG=true
+      - TRAEFIK_ACCESSLOG_FILEPATH=/etc/traefik/logs/access.log
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./config.yaml:/etc/traefik/traefik.yaml
       - ${GLOBAL_STORAGE}/ssl/acme.json:/etc/traefik/acme.json
+      - ${GLOBAL_STORAGE}/gateway/logs:/etc/traefik/logs
     networks:
     - proxy
     labels:
-      # HTTP Routers
+      # Routers
       - traefik.http.routers.gateway-http.service=api@internal
       - traefik.http.routers.gateway-http.entrypoints=http
-      - traefik.http.routers.gateway-http.rule=Host(`${DOMAIN}`)
-      # HTTPS Routers
       - traefik.http.routers.gateway-https.tls=true
       - traefik.http.routers.gateway-https.service=api@internal
       - traefik.http.routers.gateway-https.entrypoints=https
