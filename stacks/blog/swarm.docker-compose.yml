@@ -1,0 +1,55 @@
+
+
+services:
+  blog-db:
+    image: mariadb:latest
+    container_name: service-blog-db
+    restart: unless-stopped
+    volumes:
+      - ${GLOBAL_STORAGE}/blog/mysql:/var/lib/mysql
+    networks:
+      - blog-net
+    environment:
+      - MYSQL_DATABASE=${DB_DB}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+    labels:
+      - traefik.enable=false
+
+  blog:
+    image: ghost:latest
+    container_name: service-blog
+    restart: unless-stopped
+    volumes:
+      - ${GLOBAL_STORAGE}/blog/main:/var/lib/ghost/content
+    networks:
+      - proxy
+      - blog-net
+    links:
+      - blog-db
+    depends_on:
+      - blog-db
+    environment:
+      - url=https://${DOMAIN}
+      - database__client=mysql
+      - database__connection__host=blog-db
+      - database__connection__database=${DB_DB}
+      - database__connection__user=${DB_USER}
+      - database__connection__password=${DB_PASS}
+    labels:
+      - traefik.enable=true
+      # Routers
+      - traefik.http.routers.blog.tls=true
+      - traefik.http.routers.blog.tls.certresolver=letsencrypt
+      - traefik.http.routers.blog.entrypoints=https
+      - traefik.http.routers.blog.rule=Host(`${DOMAIN}`)
+      # Services
+      - traefik.http.services.blog.loadbalancer.server.port=2368
+
+networks:
+  blog-net:
+    name: blog-net
+    external: false
+  proxy:
+    external: true
